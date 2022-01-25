@@ -1,5 +1,5 @@
 import React,{ useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, SafeAreaView, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
 export default function App() {
@@ -7,7 +7,7 @@ export default function App() {
   const [user, setUser] = useState("")
   const [available, setUserAvailable] = useState("#9FA5C0")
   const [availableUserName, setUserAvailableUserName] = useState("#9FA5C0")
-  const [logo, setLogo] = useState("check-square")
+  const [logo, setLogo] = useState("check-circle")
 
   return (
     <SafeAreaView style={styles.container}>
@@ -16,7 +16,8 @@ export default function App() {
       <Text style={styles.subTitle}>Choose a username and get started</Text>
       </View>
       <View style={styles.section}>
-      <FontAwesome name="user" size={24} color="grey" style={styles.userIcon} />
+      {/* <FontAwesome name="user" size={24} color="grey" style={styles.userIcon} /> */}
+      <Image source={require('./assets/user.png')} style={styles.logo1} />
       <TextInput
         placeholder='Username'
         style={styles.input}
@@ -25,7 +26,7 @@ export default function App() {
           let collection = {}
           collection.username = text
           if(text.length >= 4) {
-            setUserAvailable("green")
+            setUserAvailable("#2E3E5C")
             fetch('https://app.simplycooked.de/user/usernameAvailable', {
               method : 'POST',
               headers: {
@@ -40,15 +41,15 @@ export default function App() {
             .then((json) => {
               console.log(json)
               console.log(json.isAvailable)
-              setUserAvailableUserName(json.isAvailable ? "green" : "red")
-              setLogo(json.isAvailable ? "check-square" : "times-circle")
+              setUserAvailableUserName(json.isAvailable ? "#2E3E5C" : "#FF6464")
+              setLogo(json.isAvailable ? "check-circle" : "times-circle")
             })
           } else if (text.length == 0) {
-            setUserAvailable("black")
-            setUserAvailableUserName("black")
+            setUserAvailable("#9FA5C0")
+            setUserAvailableUserName("#9FA5C0")
           }else {
-            setUserAvailable("red")
-            setUserAvailableUserName("black")
+            setUserAvailable("#FF6464")
+            setUserAvailableUserName("#9FA5C0")
           }
         }}
         value={user}
@@ -58,7 +59,7 @@ export default function App() {
       <View style={styles.midPart}>
         <Text style={styles.heading1}>Your UserName must be:</Text>
         <View style={styles.checkbox}>
-        <FontAwesome name="check-square" size={18} style={[{color: available}]}/>
+        <FontAwesome name="check-circle" size={18} style={[{color: available}]}/>
         <Text style={[{color: available,left:8,fontSize:15,fontWeight:'500',letterSpacing:0.5}]}>Atleast 4 Characters</Text>
         </View>
         <View style={styles.checkbox}>
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     color:'#9FA5C0',
   },
   userIcon:{
-    left:10
+    
   },
 
   input:{
@@ -157,4 +158,9 @@ const styles = StyleSheet.create({
      lineHeight:27,
      color:'#3E5481'
    },
+   logo1:{
+     height:24,
+     width:24,
+     left:10
+   }
 });
